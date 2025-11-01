@@ -1,12 +1,27 @@
 const Joi = require("joi");
 
 const RegisterUserValidation = Joi.object({
-  firstname: Joi.string().required(),
-  lastname: Joi.string().required(),
-  email: Joi.string().required(),
-  phone: Joi.string().required(),
+  name: Joi.string().required(),
+  identify: Joi.string().required(),
   password: Joi.string().required(),
-  address: Joi.string().required(),
 });
 
-module.exports = { RegisterUserValidation };
+const LoginUserValidation = Joi.object({
+  identify: Joi.string().required(),
+  password: Joi.string().required(),
+});
+
+const UserEditValidation = Joi.object({
+  firstname: Joi.string(),
+  lastname: Joi.string(),
+  email: Joi.string(),
+  address: Joi.string(),
+  current_password: Joi.string(),
+  new_password: Joi.string(),
+});
+
+module.exports = {
+  RegisterUserValidation,
+  LoginUserValidation,
+  UserEditValidation,
+};
