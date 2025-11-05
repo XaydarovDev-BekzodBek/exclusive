@@ -8,7 +8,17 @@ const SwaggerSpec = SwaggerJsDocs({
       title: "Express api with Swagger",
       version: "1.0.0",
     },
+    basePath: "/api",
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+        },
+      },
+    },
   },
+
   apis: ["./src/routes/*.route.js"],
 });
 

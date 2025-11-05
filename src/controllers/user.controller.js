@@ -43,9 +43,9 @@ exports.LoginUser = async (req, res) => {
       return res.status(400).send("Email or password invalid");
     }
 
-    const matchPassword = await bcrypt.compare(user.password, password);
+    const matchPassword = await bcrypt.compare(password, user.password);
 
-    if (matchPassword) {
+    if (!matchPassword) {
       return res.status(400).send("Email or password invalid");
     }
 
@@ -82,14 +82,15 @@ exports.updateUser = async (req, res) => {
       address,
       current_password,
       new_password,
+      phone,
     } = req.body;
     const user = await UserModel.findById(req.use.id);
     if (!user) {
       return res.status(404).send("User not found");
     }
 
-    const matchPassword = await bcrypt.compare(user.password, current_password);
-    if (matchPassword) {
+    const matchPassword = await bcrypt.compare(current_password, user.password);
+    if (!matchPassword) {
       return res.status(400).send("Password is invalid");
     }
 
@@ -97,7 +98,8 @@ exports.updateUser = async (req, res) => {
     user.lastname = lastname;
     user.email = email;
     user.address = address;
-    user.password = new_password;
+    user.password = new_password
+    user.phone = phone;
 
     await user.save();
     return res.status(200).send(user);

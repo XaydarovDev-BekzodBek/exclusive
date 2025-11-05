@@ -21,11 +21,11 @@ exports.verifyValidation = (schema) => (req, res, next) => {
 };
 
 exports.verifyToken = (req, res, next) => {
-  const token = req.headers["authorization"];
-  if (!token) {
+  const token = req.headers["authorization"]?.split(" ")
+  if (!token?.['1']) {
     return res.status(403).json({ message: "No token provided!" });
   }
-  jwt.verify(token, JWT_SECRET, async (error, use) => {
+  jwt.verify(token[1], JWT_SECRET, async (error, use) => {
     if (error) {
       return res.status(500).json({ success: false, message: error });
     }

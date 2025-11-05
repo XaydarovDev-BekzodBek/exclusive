@@ -9,6 +9,7 @@ const {
   UserEditValidation,
 } = require("../validations/user.validation");
 const { verifyValidation, verifyToken } = require("../middlewares");
+
 /**
  * @swagger
  * tags:
@@ -83,7 +84,66 @@ router.post(
   Controller.LoginUser
 );
 
+/**
+ * @swagger
+ * /api/user/me:
+ *   get:
+ *     summary: get user by id
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: success
+ *       404:
+ *         description: not found
+ *       500:
+ *         description: server error
+ */
 router.get("/user/me", verifyToken, Controller.getUserByToken);
+
+/**
+ * @swagger
+ * /api/user/update:
+ *   put:
+ *     summary: update user by id
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstname:
+ *                 type: string
+ *               lastname:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *                 example: string@gmail.com
+ *               phone:
+ *                 type: string
+ *                 example: +998990010203
+ *               address:
+ *                 type: string
+ *               current_password:
+ *                 type: string
+ *               new_password:
+ *                 type: string
+ *                 example: 1234
+ *     responses:
+ *       200:
+ *         description: user updated
+ *       400:
+ *         description: invalid inputs
+ *       404:
+ *         description: not found
+ *       500:
+ *         description: server error
+ */
 router.put(
   "/user/update",
   verifyToken,
