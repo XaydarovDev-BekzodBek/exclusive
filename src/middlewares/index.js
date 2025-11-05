@@ -1,5 +1,5 @@
 const { JWT_SECRET } = require("../constants/process.constants");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
 
 exports.verifyValidation = (schema) => (req, res, next) => {
   const { error } = schema.validate(req.body);
@@ -8,6 +8,14 @@ exports.verifyValidation = (schema) => (req, res, next) => {
       success: false,
       message: error.details[0].message,
     });
+  }
+  if (
+    req.body.identify &&
+    (!req.body.identify.includes("@") || req.body.identify.length < 9)
+  ) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Email or phone invalid" });
   }
   next();
 };
@@ -21,7 +29,7 @@ exports.verifyToken = (req, res, next) => {
     if (error) {
       return res.status(500).json({ success: false, message: error });
     }
-    req.use = use.data
+    req.use = use.data;
     next();
   });
 };

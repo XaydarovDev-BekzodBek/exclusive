@@ -10,7 +10,7 @@ exports.RegisterUser = async (req, res) => {
       identify.includes("@") ? { email: identify } : { phone: identify }
     );
     if (oldUser) {
-      return req.status(400).send("This email or phone is there");
+      return res.status(400).send("This email or phone is there");
     } else {
       const identifyObj = identify.includes("@")
         ? { email: identify, phone: "" }
