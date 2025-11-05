@@ -13,3 +13,16 @@ exports.createContact = async (req, res) => {
     return res.status(500).send(error);
   }
 };
+
+exports.getAllContacts = async (req, res) => {
+  try {
+    const contacts = await ContactModel.find({}).populate("user_id");
+
+    return res
+      .status(200)
+      .json({ success: true, message: "list of contacts", contacts });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send(error);
+  }
+};

@@ -46,11 +46,36 @@ const { CreateContactSchema } = require("../validations/contact.validation");
  *       500:
  *         description: server error
  */
+
 router.post(
   "/contact/create",
   middlewares.verifyValidation(CreateContactSchema),
   middlewares.verifyToken,
   Controller.createContact
+);
+
+/**
+ * @swagger
+ * /api/contact/get_all:
+ *   get:
+ *     summary: get list of contacts
+ *     tags: [Contact]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: list of contacts
+ *       401:
+ *         description: you are not admin
+ *       500:
+ *         description: server error
+ */
+
+router.get(
+  "/contact/get_all",
+  middlewares.verifyToken,
+  middlewares.verifyAdmin,
+  Controller.getAllContacts
 );
 
 module.exports = router;

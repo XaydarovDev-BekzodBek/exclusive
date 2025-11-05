@@ -1,5 +1,6 @@
 const { JWT_SECRET } = require("../constants/process.constants");
 const jwt = require("jsonwebtoken");
+const { AdminModel } = require("../models");
 
 exports.verifyValidation = (schema) => (req, res, next) => {
   const { error } = schema.validate(req.body);
@@ -21,8 +22,8 @@ exports.verifyValidation = (schema) => (req, res, next) => {
 };
 
 exports.verifyToken = (req, res, next) => {
-  const token = req.headers["authorization"]?.split(" ")
-  if (!token?.['1']) {
+  const token = req.headers["authorization"]?.split(" ");
+  if (!token?.["1"]) {
     return res.status(403).json({ message: "No token provided!" });
   }
   jwt.verify(token[1], JWT_SECRET, async (error, use) => {
@@ -32,4 +33,20 @@ exports.verifyToken = (req, res, next) => {
     req.use = use.data;
     next();
   });
+};
+
+exports.verifyAdmin = async (req, res, next) => {
+  try {
+    const admin = await AdminModel.findById(req.use.id);
+    if (!admin) {
+      return res
+        .status(401)
+        .json({ success: false, message: "you are not admin" });
+    }
+    req.admin = admin;
+    next();
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send(error);
+  }
 };
