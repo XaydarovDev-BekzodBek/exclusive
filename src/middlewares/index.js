@@ -50,3 +50,19 @@ exports.verifyAdmin = async (req, res, next) => {
     return res.status(500).send(error);
   }
 };
+
+exports.verifySuperAdmin = async (req, res, next) => {
+  try {
+    const admin = await AdminModel.findById(req.use.id);
+    if (!admin || !admin.isSuperAdmin) {
+      return res
+        .status(401)
+        .json({ success: false, message: "you are not admin" });
+    }
+    req.admin = admin;
+    next();
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send(error);
+  }
+};

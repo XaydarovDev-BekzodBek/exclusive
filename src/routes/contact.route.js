@@ -78,4 +78,36 @@ router.get(
   Controller.getAllContacts
 );
 
+/**
+ * @swagger
+ * /api/contact/delete/{id}:
+ *   delete:
+ *     summary: delete contact by id
+ *     tags: [Contact]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: contact ID
+ *     responses:
+ *       200:
+ *         description: contact deleted
+ *       404:
+ *         description: contact not found
+ *       500:
+ *         description: server error
+ */
+
+router.delete(
+  "/contact/delete/:id",
+  middlewares.verifyToken,
+  middlewares.verifyAdmin,
+  Controller.deleteContact
+);
+
+
 module.exports = router;

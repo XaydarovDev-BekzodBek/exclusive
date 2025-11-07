@@ -26,3 +26,21 @@ exports.getAllContacts = async (req, res) => {
     return res.status(500).send(error);
   }
 };
+
+exports.deleteContact = async (req, res) => {
+  try {
+    const contactId = req.params.id;
+    const contact = await ContactModel.findByIdAndDelete(contactId);
+
+    if (!contact) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Contact deleted" });
+    }
+
+    return res.status(200).json({ success: true, message: "contact deleted" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send(error);
+  }
+};

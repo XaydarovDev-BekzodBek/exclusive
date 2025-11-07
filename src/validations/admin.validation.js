@@ -10,4 +10,9 @@ const LoginAdminSchema = Joi.object({
   password: Joi.string().required(),
 });
 
-module.exports = { LoginAdminSchema, CreateAdminSchema };
+const UpdateAdminSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().required(),
+});
+
+module.exports = { LoginAdminSchema, CreateAdminSchema,UpdateAdminSchema };
